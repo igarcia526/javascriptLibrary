@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css" integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay" crossorigin="anonymous">
+    <link rel="stylesheet" href="api.css">
+    <title>Sports-Hub</title>
+</head>
+<body>
+        
+    
+    <div class="container" style="background-color: none">
+                <h1 class="display-4 mb-4 text-light"></h1>
+            <div class="d-flex">
+            <a style="text-decoration: none;" href="javascript:window.location.reload(true)"><i style="font-size:3em; padding-right: 15px;" class="fas fa-home"></i></a>
+            <button class="btn btn-dark mr-4" id="getTeams0"> La Liga Soccer</button>
+            <button class="btn btn-light mr-4" id="getTeams">EPL Soccer</button>
+            <button class="btn btn-dark mr-4" id="getMotoGP">MotoGP</button>
+            </div>
+            <hr>
+        
+        
+            <div id="output" style="background-color:rgba(0, 0, 0, 0.295); padding: 0 20px 0px; border-radius: 25px;"></div>
+            
+                <form  id="searchForm">
+                  
+                           <p style="font-size: 24px;" class="form-group text-dark ">
+                            <label for="search" >Enter a team's name: </label>             
+                                <input type="text" id="search" placeholder="Barcelona" class="search form-control" required>
+                              </p>
+                            
+                                <button class="submit btn btn-dark mt-4">SEARCH</button>
+                              </p>
+                </form>
+        </div>
+            
+        
+            <script>
+                document.getElementById('getTeams0').addEventListener('click', getTeams0);
+                document.getElementById('getTeams').addEventListener('click', getTeams);
+                document.getElementById('getMotoGP').addEventListener('click', getMotoGP);
+                document.getElementById('searchForm').addEventListener('click', searchForm);
+                var searchForm = document.querySelector('form');
+                var submitBtn = document.querySelector('.submit');
+                const searchTerm = document.querySelector('.search'); 
+                searchForm.addEventListener('submit', fetchResults); 
+                searchForm.addEventListener('submit', submitSearch);
+                const baseURL = 'https://www.thesportsdb.com/api/v1/json/1/searchteams.php?t='; 
+        
+        
+                function getTeams0(){
+                    fetch('https://www.thesportsdb.com/api/v1/json/1/search_all_teams.php?l=Spanish%20La%20Liga')
+                    .then(function(response){
+                        //console.log(response);
+                        return response.json();
+                        
+                   
+                    })
+                    .then(function(data){
+                        let output = '<h2 class="mb-4 text-light ">La Liga Teams</h2>';
+                        console.log(data);
+                       
+                        data.teams.forEach(function(team){
+        
+                            
+                            output += `
+                            
+                            <ul class="list-group mb-3 ">
+                                <li class="list-group-item bg-light">Team Name: <span><img src="${team.strTeamBadge}" height="40" width="40"></span> ${team.strTeam}</li>
+                                <li class="list-group-item">League: ${team.strLeague}</li>
+                                <li class="list-group-item bg-light">Website:<a href="${team.strWebsite}"> ${team.strWebsite}</a></li>
+                                <li class="list-group-item"><img src="${team.strStadiumThumb}" height="100%" width="90%"></li>
+                            </ul>    
+                            
+                            `;
+                        });
+        
+                        document.getElementById('output').innerHTML = output;
+                    })
+                    }
+        
+                function getTeams(){
+                    fetch('https://www.thesportsdb.com/api/v1/json/1/search_all_teams.php?l=English%20Premier%20League')
+                    .then(function(response){
+                        //console.log(response);
+                        return response.json();
+                        
+                   
+                    })
+                    .then(function(data){
+                        let output = '<h2 class="mb-4 text-light">EPL Teams</h2>';
+                        console.log(data);
+                        
+                       
+                        data.teams.forEach(function(team){
+        
+                            
+                            output += `
+                            
+                            <ul class="list-group mb-3">
+                                    <li class="list-group-item bg-light">Team Name: <span><img src="${team.strTeamBadge}" height="40" width="40"></span> ${team.strTeam}</li>
+                                <li class="list-group-item">League: ${team.strLeague}</li>
+                                <li class="list-group-item bg-light">Website:<a href="${team.strWebsite}"> ${team.strWebsite}</a></li>
+                                <li class="list-group-item"><img src="${team.strStadiumThumb}" height="100%" width="90%"></li>
+                            </ul>    
+                            
+                            `;
+                        });
+        
+                        document.getElementById('output').innerHTML = output;
+                    })
+                    }
+                    function getMotoGP(){
+                    fetch('https://www.thesportsdb.com/api/v1/json/1/search_all_teams.php?l=motogp')
+                    .then(function(response){
+                        //console.log(response);
+                        return response.json();
+                        
+                   
+                    })
+                    .then(function(data){
+                        let output = '<h2 class="mb-4 text-light">MOTO GP</h2>';
+                        console.log(data);
+                        
+                       
+                        data.teams.forEach(function(team){
+        
+                            
+                            output += `
+                            
+                            <ul class="list-group mb-3">
+                                    <li class="list-group-item bg-light">Team Name: <span><img src="${team.strTeamBadge}" height="40" width="40"></span> ${team.strTeam}</li>
+                                <li class="list-group-item"><img src="${team.strTeamJersey}" height="200" width="200"></li>
+                                <li class="list-group-item bg-light">Website:<a href="${team.strWebsite}"> ${team.strWebsite}</a></li>
+                                <li class="list-group-item"><span><img src="${team.strTeamFanart1}" height="100%" width="45%"></span><img style="margin: 5px;" src="${team.strTeamFanart2}" height="100%" width="45%"></li>
+                            </ul>    
+                            
+                            `;
+                        });
+        
+                        document.getElementById('output').innerHTML = output;
+                    })
+                    }
+                
+                
+                    function submitSearch(e){
+        pageNumber = 0;
+        fetchResults(e);
+      }
+      function fetchResults(e) {
+        // Use preventDefault() to stop the form submitting
+        e.preventDefault();
+              
+        url = baseURL + searchTerm.value;  
+        //1
+  fetch(url)
+    .then(function(result) {
+    console.log(result)
+    return result.json(); //2
+  })
+  .then(function(data){
+                        let output = '<h2 class="mb-4 text-light ">Result(s)</h2>';
+                        //console.log(data);
+                        
+                       
+                        data.teams.forEach(function(team){
+                            output += `
+                            
+                           <div class="card card-body mb-3 bg-light">
+                            <h3><span><img src="${team.strTeamBadge}" height="40" width="40"></span>${team.strTeam}</h3>
+                            <p>${team.strLeague}</p>
+                            <p>${team.strStadium}</p>
+                            <p><img src="${team.strStadiumThumb}" height="100%" width="90%"></p>
+                            <p>${team.strDescriptionEN}</p>
+                            <ul class="list-group mb-3">
+                                <li class="list-group-item bg-light"><img src="${team.strTeamJersey}" height="200" width="200"></li>
+                                <li class="list-group-item bg-light">Website:<a href="${team.strWebsite}"> ${team.strWebsite}</a></li>
+                                <li class="list-group-item"><span><img src="${team.strTeamFanart1}" height="100%" width="45%"></span><img style="margin: 5px;" src="${team.strTeamFanart2}" height="100%" width="45%"></li>
+                            </ul>
+
+                            
+                            </div>
+        
+                            `;
+                        });
+        
+                        document.getElementById('output').innerHTML = output;
+                    })
+                    }
+  
+            
+            </script>
+            <a class="goTop" href="#"><i class="fas fa-chevron-circle-up"></i></a> 
+    
+</body>
+</html>
